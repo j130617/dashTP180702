@@ -121,11 +121,11 @@ d3.csv("mdw.csv", function(error, data) {
 	// Add a small label for the graph name.
   chartMdw.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("AANTAL MEDEWERKERS PER 31/12");  
    
 });
@@ -177,11 +177,11 @@ d3.csv("omzet.csv", function(error, data) {
 	// Add a small label for the graph name.
   chartOmzet.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("OMZET (x mln €)");  
    
 });
@@ -238,16 +238,16 @@ d3.csv("omzetmdw.csv", function(d, i, columns) {
      	// Add a small label for the graph name.
   chartOmzetMdw.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("OMZET PER FTE/MDW (x € 1.000)");   
   
   var legend = chartOmzetMdw.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
+      .attr("font-size", 9)
       .attr("text-anchor", "end")
     .selectAll("g")
     .data(keys.slice().reverse())
@@ -312,11 +312,11 @@ d3.csv("bedrijfskosten.csv", function(error, data) {
 	// Add a small label for the graph name.
   chartBedrijfskosten.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("BEDRIJFSKOSTEN (x mln €)");  
    
 });	
@@ -368,11 +368,11 @@ d3.csv("personeelskosten.csv", function(error, data) {
 	// Add a small label for the graph name.
   chartPersoneelskosten.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("PERSONEELSKOSTEN (x mln €)");  
    
 });
@@ -426,16 +426,16 @@ d3.csv("personeelskostenmdw.csv", function(d, i, columns) {
      	// Add a small label for the graph name.
   chartPersoneelskostenMdw.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("PERSONEELSKOSTEN PER FTE/MDW (x € 1.000)");   
   
   var legend = chartPersoneelskostenMdw.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
+      .attr("font-size", 9)
       .attr("text-anchor", "end")
     .selectAll("g")
     .data(keys.slice().reverse())
@@ -501,11 +501,11 @@ d3.csv("ebitda.csv", function(error, data) {
 	// Add a small label for the graph name.
   chartEbitda.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("EBITDA (x mln €)");  
    
 });
@@ -555,11 +555,11 @@ d3.csv("winst.csv", function(error, data) {
   
   chartWinst.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("WINST (mln €)");  
 });
 	
@@ -614,16 +614,16 @@ d3.csv("winstmdw.csv", function(d, i, columns) {
      	// Add a small label for the graph name.
   chartWinstMdw.append("text")
       .attr("class", "title")
-      .attr("x", 10)
+      .attr("x", 5)
       .attr("y", 5)
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
-      .style("font-size", 10)
+      .style("font-size", 9)
       .text("WINST PER FTE/MDW (€)");   
   
   var legend = chartWinstMdw.append("g")
       .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
+      .attr("font-size", 9)
       .attr("text-anchor", "end")
     .selectAll("g")
     .data(keys.slice().reverse())
