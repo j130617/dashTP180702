@@ -249,21 +249,21 @@ var barchartgrouped = d3.select("body").append("svg")
 	  "translate(" + margin.left + "," + margin.top + ")");
 
 // get the data //
-d3.csv("benchmark.csv", function(d, i, columns) {
+d3.csv("omzetmdw.csv", function(d, i, columns) {
   for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
   return d;
 }, function(error, data) {
   if (error) throw error;
   var keys = data.columns.slice(1);
 // Scale the range of the data
-  xbg0.domain(data.map(function(d) { return d.post; }));
+  xbg0.domain(data.map(function(d) { return d.jaar; }));
   xbg1.domain(keys).rangeRound([0, xbg0.bandwidth()]);
   ybg.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
   barchartgrouped.append("g")
     .selectAll("g")
     .data(data)
     .enter().append("g")
-      .attr("transform", function(d) { return "translate(" + xbg0(d.post) + ",0)"; })
+      .attr("transform", function(d) { return "translate(" + xbg0(d.jaar) + ",0)"; })
     .selectAll("rect")
     .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
     .enter().append("rect")
@@ -291,7 +291,7 @@ d3.csv("benchmark.csv", function(d, i, columns) {
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
       .style("font-size", 10)
-      .text("TEST (mln €)");   
+      .text("OMZET PER FTE/MDW (mln €)");   
   
   var legend = barchartgrouped.append("g")
       .attr("font-family", "sans-serif")
