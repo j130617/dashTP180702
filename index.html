@@ -133,30 +133,24 @@ d3.csv("mdw.csv", function(d, i, columns) {
       .style("font-size", 9)
       .text("Gemiddeld aantal fte/mdw");   
   
-  legendSpace = 125;	
-  
   var legend = chartMdw.append("g")
       .attr("font-family", "sans-serif")
       .attr("font-size", 9)
-      .attr("text-anchor", "end")
+      .attr("text-anchor", "start")
     .selectAll("g")
     .data(keys.slice().reverse())
     .enter().append("g")
       .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
   
-	
   legend.append("rect")
-      .attr("x", (legendSpace/2)+i*legendSpace)  // space legend
-      .attr("y", height + (margin.bottom/2)+ 15)
-      .attr("class", "legend")
+      .attr("x", width - 19)
+      .attr("width", 19)
       .attr("height", 19)
       .attr("fill", zbg);
   
   legend.append("text")
-      .attr("x", (legendSpace/2)+i*legendSpace)  // space legend
-      .attr("y", height + (margin.bottom/2)+ 15)
-      //.attr("y", 9.5)
-      .attr("class", "legend")
+      .attr("x", width - 24)
+      .attr("y", 9.5)
       .attr("dy", "0.32em")
       .text(function(d) { return d; });
 });
