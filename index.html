@@ -74,10 +74,10 @@ var ybg = d3.scaleLinear()
 var zbg = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
 
-//------------------------------------------------------------------>>>>> CHART2
+//------------------------------------------------------------------>>>>> CHART1
 
 	// Adds the chartOmzet canvas          
-var chartOmzet = d3.select("body").append("svg")
+var chartMdw = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
@@ -85,12 +85,12 @@ var chartOmzet = d3.select("body").append("svg")
 	  "translate(" + margin.left + "," + margin.top + ")");
 
 	// Get the data
-d3.csv("omzet.csv", function(error, data) {
+d3.csv("mdw.csv", function(error, data) {
   if (error) throw error;
   
   	// format the data
   data.forEach(function(d) {
-    d.eur = +d.eur;
+    d.aantal = +d.aantal;
   });
 	
   	// Scale the range of the data in the domains
@@ -98,28 +98,28 @@ d3.csv("omzet.csv", function(error, data) {
   yb.domain([0, d3.max(data, function(d) { return d.eur; })]);	
   
 	// append the rectangles for the bar chart
-  chartOmzet.selectAll(".bar")
+  chartMdw.selectAll(".bar")
       .data(data)
     .enter().append("rect")
       .attr("class", "bar")
       .attr("x", function(d) { return xb(d.jaar); })
       .attr("width", xb.bandwidth())
-      .attr("y", function(d) { return yb(d.eur); })
-      .attr("height", function(d) { return height - yb(d.eur); });
+      .attr("y", function(d) { return yb(d.aantal); })
+      .attr("height", function(d) { return height - yb(d.aantal); });
   
   	// add the xB Axis
-  chartOmzet.append("g")
+  chartMdw.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(xb));
   
   	// add the yB Axis
-  chartOmzet.append("g")
+  chartMdw.append("g")
       .attr("class", "axis")  
       .call(d3.axisLeft(yb));
   
 	// Add a small label for the graph name.
-  chartOmzet.append("text")
+  chartMdw.append("text")
       .attr("class", "title")
       .attr("x", 10)
       .attr("y", 5)
