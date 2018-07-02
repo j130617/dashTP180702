@@ -243,7 +243,7 @@ d3.csv("omzetmdw.csv", function(d, i, columns) {
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
       .style("font-size", 10)
-      .text("OMZET PER FTE/MDW (mln €)");   
+      .text("OMZET PER FTE/MDW (x € 1.000)");   
   
   var legend = chartOmzetMdw.append("g")
       .attr("font-family", "sans-serif")
@@ -377,7 +377,7 @@ d3.csv("personeelskosten.csv", function(error, data) {
    
 });
 
-	//------------------------------------------------------------------>>>>> CHART3
+	//------------------------------------------------------------------>>>>> CHART6
 	// Adds the chartPersoneelskostenMdw to canvas
 var chartPersoneelskostenMdw = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
@@ -431,7 +431,7 @@ d3.csv("omzetmdw.csv", function(d, i, columns) {
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
       .style("font-size", 10)
-      .text("PERSONEELSKOSTEN PER FTE/MDW (mln €)");   
+      .text("PERSONEELSKOSTEN PER FTE/MDW (x € 1.000)");   
   
   var legend = chartPersoneelskostenMdw.append("g")
       .attr("font-family", "sans-serif")
