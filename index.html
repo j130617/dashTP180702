@@ -133,7 +133,7 @@ d3.csv("mdw.csv", function(d, i, columns) {
       .style("font-size", 9)
       .text("Gemiddeld aantal fte/mdw");   
   
-    var legend = chartMdw.selectAll(".legend")
+    var legend = chartMdw.append("g")
         .data(options.slice())
         .enter().append("g")
         .attr("class", "legend")
