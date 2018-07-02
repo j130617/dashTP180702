@@ -571,6 +571,7 @@ var chartchartWinstMdw = d3.select("body").append("svg")
   .append("g")
     .attr("transform", 
 	  "translate(" + margin.left + "," + margin.top + ")");
+	
 	// get the data //
 d3.csv("winstmdw.csv", function(d, i, columns) {
   for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
@@ -578,6 +579,7 @@ d3.csv("winstmdw.csv", function(d, i, columns) {
 }, function(error, data) {
   if (error) throw error;
   var keys = data.columns.slice(1);
+	
 	// Scale the range of the data
   xbg0.domain(data.map(function(d) { return d.jaar; }));
   xbg1.domain(keys).rangeRound([0, xbg0.bandwidth()]);
@@ -617,7 +619,7 @@ d3.csv("winstmdw.csv", function(d, i, columns) {
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
       .style("font-size", 10)
-      .text("PERSONEELSKOSTEN PER FTE/MDW (x € 1.000)");   
+      .text("WINST PER FTE/MDW (€)");   
   
   var legend = chartWinstMdw.append("g")
       .attr("font-family", "sans-serif")
