@@ -529,29 +529,29 @@ d3.csv("winst.csv", function(error, data) {
   });
 	
   	// Scale the range of the data in the domains
-  x.domain(data.map(function(d) { return d.jaar; }));
-  y.domain([0, d3.max(data, function(d) { return d.eur; })]);	
+  xb.domain(data.map(function(d) { return d.jaar; }));
+  yb.domain([0, d3.max(data, function(d) { return d.eur; })]);	
   
 	// append the rectangles for the bar chart
   chartWinst.selectAll(".bar")
       .data(data)
     .enter().append("rect")
       .attr("class", "bar")
-      .attr("x", function(d) { return x(d.jaar); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.eur); })
-      .attr("height", function(d) { return height - y(d.eur); });
+      .attr("x", function(d) { return xb(d.jaar); })
+      .attr("width", xb.bandwidth())
+      .attr("y", function(d) { return yb(d.eur); })
+      .attr("height", function(d) { return height - yb(d.eur); });
   
   	// add the x Axis
   chartWinst.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
+      .call(d3.axisBottom(xb));
   
   	// add the y Axis
   chartWinst.append("g")
       .attr("class", "axis")
-      .call(d3.axisLeft(y));
+      .call(d3.axisLeft(yb));
   
   chartWinst.append("text")
       .attr("class", "title")
