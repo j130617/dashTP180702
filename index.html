@@ -1,8 +1,10 @@
 <!DOCTYPE html>
 <meta charset="utf-8">
 <style> /* set the CSS */
+
 body { font: 12px Arial;}
-/* opmaak linechart*/
+
+	/* opmaak linechart*/
 path { 
     stroke: steelblue;
     stroke-width: 2;
@@ -15,15 +17,18 @@ path {
     stroke-width: 1;
     shape-rendering: crispEdges;
 }
-/*opmaak legenda*/
+
+	/*opmaak legenda*/
 .legend {
     font-size: 12px;
     font-weight: bold;
     text-anchor: middle;
 }
-/* opmaak barchart*/
+
+	/* opmaak barchart*/
 .bar { fill: steelblue; }
-/* opmaak tabel*/
+
+	/* opmaak tabel*/
 th { text-align: left; }
 /*th, td { padding: 1px 4px;}*/
 th, td { padding: 0 1em 0.5ex 0;}
@@ -37,31 +42,28 @@ th.num, td.num { text-align: right; }
 <!-- load the d3.js library -->    	
 <script src="//d3js.org/d3.v4.min.js"></script>
 <script>
-// Set the dimensions of the canvas / graph
+
+	// Set the dimensions of the canvas / graph
 var margin = {top: 10, right: 20, bottom: 40, left: 50},
     width = 500 - margin.left - margin.right,
     height = 275 - margin.top - margin.bottom;
-// Parse the date / time
-var parseDate = d3.timeParse("%b %Y");
-	
+
 // set the ranges REGULIER xb en yb = bar chart /  xl en yl = line graph / xbg, ybg en zbg = bar chart grouped
-var x = d3.scaleBand()
-        .range([0, width])
-        .padding(0.1);
-var y = d3.scaleLinear()
-        .range([height, 0]);
-// ranges bar chart // 
+
+	// ranges bar chart // 
 var xb = d3.scaleBand()
         .range([0, width])
         .padding(0.1);
 var yb = d3.scaleLinear()
         .range([height, 0]);
-// ranges line chart//
+
+	// ranges line chart//
 var xl = d3.scaleTime()
 	.range([0, width]);  
 var yl = d3.scaleLinear()
 	.range([height, 0]);
-// ranges grouped bar chart//
+
+	// ranges grouped bar chart//
 var xbg0 = d3.scaleBand()
     .rangeRound([0, width])
     .paddingInner(0.1);
@@ -71,27 +73,31 @@ var ybg = d3.scaleLinear()
     .rangeRound([height, 0]);
 var zbg = d3.scaleOrdinal()
     .range(["#98abc5", "#8a89a6", "#7b6888", "#6b486b", "#a05d56", "#d0743c", "#ff8c00"]);
-	
-// Adds the chartOmzet canvas          
+
+//------------------------------------------------------------------>>>>> CHART1
+
+	// Adds the chartOmzet canvas          
 var chartOmzet = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
   .append("g")
     .attr("transform", 
 	  "translate(" + margin.left + "," + margin.top + ")");
-// Get the data
+
+	// Get the data
 d3.csv("omzet.csv", function(error, data) {
   if (error) throw error;
   
-  // format the data
+  	// format the data
   data.forEach(function(d) {
     d.eur = +d.eur;
   });
 	
-  // Scale the range of the data in the domains
+  	// Scale the range of the data in the domains
   xb.domain(data.map(function(d) { return d.jaar; }));
   yb.domain([0, d3.max(data, function(d) { return d.eur; })]);	
-  // append the rectangles for the bar chart
+  
+	// append the rectangles for the bar chart
   chartOmzet.selectAll(".bar")
       .data(data)
     .enter().append("rect")
@@ -101,17 +107,18 @@ d3.csv("omzet.csv", function(error, data) {
       .attr("y", function(d) { return yb(d.eur); })
       .attr("height", function(d) { return height - yb(d.eur); });
   
-  // add the xB Axis
+  	// add the xB Axis
   chartOmzet.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(xb));
   
-  // add the yB Axis
+  	// add the yB Axis
   chartOmzet.append("g")
       .attr("class", "axis")  
       .call(d3.axisLeft(yb));
-  // Add a small label for the graph name.
+  
+	// Add a small label for the graph name.
   chartOmzet.append("text")
       .attr("class", "title")
       .attr("x", 10)
@@ -121,480 +128,6 @@ d3.csv("omzet.csv", function(error, data) {
       .style("font-size", 10)
       .text("OMZET (mln €)");  
    
-});
-	
-// Adds the chart2 canvas          
-var chartWinst = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-	  "translate(" + margin.left + "," + margin.top + ")");
-// Get the data
-d3.csv("winst.csv", function(error, data) {
-  if (error) throw error;
-  // format the data
-  data.forEach(function(d) {
-    d.eur = +d.eur;
-  });
-	
-  // Scale the range of the data in the domains
-  x.domain(data.map(function(d) { return d.jaar; }));
-  y.domain([0, d3.max(data, function(d) { return d.eur; })]);	
-  // append the rectangles for the bar chart
-  chartWinst.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.jaar); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.eur); })
-      .attr("height", function(d) { return height - y(d.eur); });
-  
-  // add the x Axis
-  chartWinst.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-  
-  // add the y Axis
-  chartWinst.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y));
-  
-  chartWinst.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("WINST (mln €)");  
-});
-// Adds the chart4 canvas          
-var chartKosten = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-	  "translate(" + margin.left + "," + margin.top + ")");
-// Get the data
-d3.csv("kosten.csv", function(error, data) {
-  if (error) throw error;
-  
-  // format the data
-  data.forEach(function(d) {
-    d.eur = +d.eur;
-  });
-	
-  // Scale the range of the data in the domains
-  x.domain(data.map(function(d) { return d.jaar; }));
-  y.domain([0, d3.max(data, function(d) { return d.eur; })]);	
-  // append the rectangles for the bar chart
-  chartKosten.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.jaar); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.eur); })
-      .attr("height", function(d) { return height - y(d.eur); });
-  
-  // add the x Axis
-  chartKosten.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-  
-  // add the y Axis
-  chartKosten.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y));
-  // Add a small label for the graph name.
-  chartKosten.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("BEDRIJFSKOSTEN (mln €)");  
-   
-});
-// Adds the chart3 canvas (MET PERCENTAGES OP DE Y-AS)      
-var chartOmzetgroei = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-	  "translate(" + margin.left + "," + margin.top + ")");
-// Get the data
-d3.csv("omzetgroei.csv", function(d) {
-  d.procent = +d.procent;
-  return d;
-}, function(error, data) {
-  if (error) throw error;
-  x.domain(data.map(function(d) { return d.jaar; }));
-  y.domain([0, d3.max(data, function(d) { return d.procent; })]);
-	
-  // append the rectangles for the bar chart
-  chartOmzetgroei.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.jaar); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.procent); })
-      .attr("height", function(d) { return height - y(d.procent); });
-  
-  // add the x Axis
-  chartOmzetgroei.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-  
-  // add the y Axis
-  chartOmzetgroei.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y).ticks(10, "%"))
-  // Add a small label for the graph name.
-  chartOmzetgroei.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("OMZETGROEI");  
-   
-});
-	
-// Adds the chart3 canvas (MET PERCENTAGES OP DE Y-AS)      
-var chartWinstgroei = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-	  "translate(" + margin.left + "," + margin.top + ")");
-// Get the data
-d3.csv("winstgroei.csv", function(d) {
-  d.procent = +d.procent;
-  return d;
-}, function(error, data) {
-  if (error) throw error;
-  x.domain(data.map(function(d) { return d.jaar; }));
-  y.domain([0, d3.max(data, function(d) { return d.procent; })]);
-	
-  // append the rectangles for the bar chart
-  chartWinstgroei.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.jaar); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.procent); })
-      .attr("height", function(d) { return height - y(d.procent); });
-  
-  // add the x Axis
-  chartWinstgroei.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-  
-  // add the y Axis
-  chartWinstgroei.append("g")
-      .attr("class", "axis")  
-      .call(d3.axisLeft(y).ticks(10, "%"))
-  
-  // Add a small label for the graph name.
-  chartWinstgroei.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("WINSTGROEI");  
-   
-});
-	
-	// Adds the chart5 canvas          
-var chart5 = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-	  "translate(" + margin.left + "," + margin.top + ")");
-// Get the data
-d3.csv("omzet.csv", function(error, data) {
-  if (error) throw error;
-  
-  // format the data
-  data.forEach(function(d) {
-    d.eur = +d.eur;
-  });
-	
-  // Scale the range of the data in the domains
-  x.domain(data.map(function(d) { return d.jaar; }));
-  y.domain([0, d3.max(data, function(d) { return d.eur; })]);	
-  // append the rectangles for the bar chart
-  chart5.selectAll(".bar")
-      .data(data)
-    .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return x(d.jaar); })
-      .attr("width", x.bandwidth())
-      .attr("y", function(d) { return y(d.eur); })
-      .attr("height", function(d) { return height - y(d.eur); });
-  
-  // add the x Axis
-  chart5.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(x));
-  
-  // add the y Axis
-  chart5.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(y));
-  // Add a small label for the graph name.
-  chart5.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("TEST (mln €)");  
-   
-});
-	
-// Adds the linechart canvas
-var linechart = d3.select("body")
-    .append("svg")
-        .attr("width", width + margin.left + margin.right)
-        .attr("height", height + margin.top + margin.bottom)
-    .append("g")
-        .attr("transform", 
-              "translate(" + margin.left + "," + margin.top + ")");
-// Define the line
-var priceline = d3.line()	
-    .x(function(d) { return xl(d.date); })
-    .y(function(d) { return yl(d.price); });
-    
-// Get the data
-d3.csv("stocks.csv", function(error, data) {
-    data.forEach(function(d) {
-	d.date = parseDate(d.date);
-	d.price = +d.price;
-    });
-    // Scale the range of the data
-    xl.domain(d3.extent(data, function(d) { return d.date; }));
-    yl.domain([0, d3.max(data, function(d) { return d.price; })]);
-    // Nest the entries by symbol
-    var dataNest = d3.nest()
-        .key(function(d) {return d.symbol;})
-        .entries(data);
-    
-    // set the colour scale
-    var color = d3.scaleOrdinal(d3.schemeCategory10);
-    legendSpace = width/dataNest.length; // spacing for the legend */
-    
-    // Loop through each symbol / key
-    dataNest.forEach(function(d,i) { 
-        linechart.append("path")
-            .attr("class", "line")
-	    .style("stroke", function() { // Add the colours dynamically
-                return d.color = color(d.key); })
-            .attr("d", priceline(d.values));
-        
-	// Add the Legend ORIGINEEL
-        linechart.append("text")
-            .attr("x", (legendSpace/2)+i*legendSpace)  // space legend
-            .attr("y", height + (margin.bottom/2)+ 15)
-            .attr("class", "legend")    // style the legend
-            .style("fill", function() { // Add the colours dynamically
-                return d.color = color(d.key); })
-            .text(d.key); 
-	 
-    });
-    // Add the X Axis
-    linechart.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(xl));
-    // Add the Y Axis
-    linechart.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(yl));
-  
-    // Add a small label for the graph name.
-    linechart.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("TEST (mln €)");  
-});
-	
-	
-// Add barchartgrouped to canvas
-var barchartgrouped = d3.select("body").append("svg")
-    .attr("width", width + margin.left + margin.right)
-    .attr("height", height + margin.top + margin.bottom)
-  .append("g")
-    .attr("transform", 
-	  "translate(" + margin.left + "," + margin.top + ")");
-	
-//	d3.select("svg"),
-   // margin = {top: 20, right: 20, bottom: 30, left: 40},
-    //width = +svg.attr("width") - margin.left - margin.right,
-    //height = +svg.attr("height") - margin.top - margin.bottom,
-    //g = svg.append("g").attr("transform", "translate(" + margin.left + "," + margin.top + ")");
-	
-// get the data //
-d3.csv("benchmark.csv", function(d, i, columns) {
-  for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
-  return d;
-}, function(error, data) {
-  if (error) throw error;
-  var keys = data.columns.slice(1);
-// Scale the range of the data
-  xbg0.domain(data.map(function(d) { return d.post; }));
-  xbg1.domain(keys).rangeRound([0, xbg0.bandwidth()]);
-  ybg.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
-  barchartgrouped.append("g")
-    .selectAll("g")
-    .data(data)
-    .enter().append("g")
-      .attr("transform", function(d) { return "translate(" + xbg0(d.post) + ",0)"; })
-    .selectAll("rect")
-    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
-    .enter().append("rect")
-      .attr("x", function(d) { return xbg1(d.key); })
-      .attr("y", function(d) { return ybg(d.value); })
-      .attr("width", xbg1.bandwidth())
-      .attr("height", function(d) { return height - ybg(d.value); })
-      .attr("fill", function(d) { return zbg(d.key); });
-  
-  // Add the X Axis
-  barchartgrouped.append("g")
-      .attr("class", "axis")
-      .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(xbg0));
-  // Add the Y Axis
-  barchartgrouped.append("g")
-      .attr("class", "axis")
-      .call(d3.axisLeft(ybg));
-  
-     // Add a small label for the graph name.
-  barchartgrouped.append("text")
-      .attr("class", "title")
-      .attr("x", 10)
-      .attr("y", 5)
-      .attr("font-weight", "bold")
-      .style("text-anchor", "start")
-      .style("font-size", 10)
-      .text("TEST (mln €)");   
- // barchartgrouped.append("g")
-      //.attr("class", "axis")
-      //.call(d3.axisLeft(ybg).ticks(null, "s"))
-    //.append("text")
-      //.attr("x", 2)
-      //.attr("y", ybg(ybg.ticks().pop()) + 0.5)
-      //.attr("dy", "0.32em")
-      //.attr("fill", "#000")
-      //.attr("font-weight", "bold")
-      //.attr("text-anchor", "start")
-      //.text("mln €");
-  
-  var legend = barchartgrouped.append("g")
-      .attr("font-family", "sans-serif")
-      .attr("font-size", 10)
-      .attr("text-anchor", "end")
-    .selectAll("g")
-    .data(keys.slice().reverse())
-    .enter().append("g")
-      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
-  
-  legend.append("rect")
-      .attr("x", width - 19)
-      .attr("width", 19)
-      .attr("height", 19)
-      .attr("fill", zbg);
-  
-  legend.append("text")
-      .attr("x", width - 24)
-      .attr("y", 9.5)
-      .attr("dy", "0.32em")
-      .text(function(d) { return d; });
-});
-	// Adds the table canvas          
-// Get the data
-d3.csv("personeel.csv", function(error, data) {
-  if (error) throw error;
-  // format the data
-  data.forEach(function(d) {
-      //d.date1 = parseTime(d.date);
-      //d.jaar1 = parseTime(d.jaar);
-      d.jaar = +d.jaar;
-      //d.functie = +d.functie;
-      //return d;
-      //d.open = +d.open;  //  <= added this for tidy house keeping
-      //d.diff = Math.round(( d.close - d.open ) * 100 ) / 100;
-  });
-	
-function tabulate(data, columns) {
-    var table = d3.select("body").append("svg")
-            .attr("width", width + margin.left + margin.right)
-            .attr("height", height + margin.top + margin.bottom)
-            //.attr("style", "margin-left: 360px")
-            .style("border-collapse", "collapse")
-            .style("border", "1px grey solid"),
-        thead = table.append("thead"),
-        tbody = table.append("tbody");
-    
-	// append the header row
-    thead.append("tr")
-        .selectAll("th")
-        .data(columns)
-        .enter()
-        .append("th")
-            .text(function(column) { return column; });
-    
-	// create a row for each object in the data
-    var rows = tbody.selectAll("tr")
-        .data(data)
-        .enter()
-        .append("tr");
-    
-	// create a cell in each row for each column
-    var cells = rows.selectAll("td")
-        .data(function(row) {
-            return columns.map(function(column) {
-                return {column: column, value: row[column]};
-            });
-        })
-        .enter()
-        .append("td")
-        .attr("style", "font-family: Arial") // sets the font style
-            .html(function(d) { return d.value; });
-    
-    return table;
-}
-// render the table
-var peopleTable = tabulate(data, ["jaar", "management", "supervisors", "agents", "overig"]);
-peopleTable.selectAll("tbody tr") 
-           .sort(function(a, b) {
-            //return d3.descending(a.eur, b.eur); 
-	    return d3.ascending(a.jaar, b.jaar);
-           });
-peopleTable.selectAll("thead th")
-           .text(function(column) {
-             return column.charAt(0).toUpperCase() + column.substr(1);
-           });
 });
 		
 </script>
