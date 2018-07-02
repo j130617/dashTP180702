@@ -563,5 +563,83 @@ d3.csv("winst.csv", function(error, data) {
       .text("WINST (mln €)");  
 });
 	
+		//------------------------------------------------------------------>>>>> CHART9
+	// Adds the chartWinstMdw to canvas
+var chartchartWinstMdw = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+	  "translate(" + margin.left + "," + margin.top + ")");
+	// get the data //
+d3.csv("winstmdw.csv", function(d, i, columns) {
+  for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+  var keys = data.columns.slice(1);
+	// Scale the range of the data
+  xbg0.domain(data.map(function(d) { return d.jaar; }));
+  xbg1.domain(keys).rangeRound([0, xbg0.bandwidth()]);
+  ybg.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
+  
+  
+  chartWinstMdw.append("g")
+    .selectAll("g")
+    .data(data)
+    .enter().append("g")
+      .attr("transform", function(d) { return "translate(" + xbg0(d.jaar) + ",0)"; })
+    .selectAll("rect")
+    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
+    .enter().append("rect")
+      .attr("x", function(d) { return xbg1(d.key); })
+      .attr("y", function(d) { return ybg(d.value); })
+      .attr("width", xbg1.bandwidth())
+      .attr("height", function(d) { return height - ybg(d.value); })
+      .attr("fill", function(d) { return zbg(d.key); });
+  
+  	// Add the X Axis
+  chartWinstMdw.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(xbg0));
+  
+	// Add the Y Axis
+  chartWinstMdw.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(ybg));
+  
+     	// Add a small label for the graph name.
+  chartWinstMdw.append("text")
+      .attr("class", "title")
+      .attr("x", 10)
+      .attr("y", 5)
+      .attr("font-weight", "bold")
+      .style("text-anchor", "start")
+      .style("font-size", 10)
+      .text("PERSONEELSKOSTEN PER FTE/MDW (x € 1.000)");   
+  
+  var legend = chartWinstMdw.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 10)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+  
+  legend.append("rect")
+      .attr("x", width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", zbg);
+  
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
+});
+	
 </script>
 </body>
