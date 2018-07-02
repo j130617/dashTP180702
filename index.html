@@ -386,7 +386,7 @@ var chartPersoneelskostenMdw = d3.select("body").append("svg")
     .attr("transform", 
 	  "translate(" + margin.left + "," + margin.top + ")");
 	// get the data //
-d3.csv("omzetmdw.csv", function(d, i, columns) {
+d3.csv("personeelskostenmdw.csv", function(d, i, columns) {
   for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
   return d;
 }, function(error, data) {
