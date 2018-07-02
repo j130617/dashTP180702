@@ -76,7 +76,7 @@ var zbg = d3.scaleOrdinal()
 
 	//------------------------------------------------------------------>>>>> CHART1
 
-	// Adds the chartMdw canvas          
+	// Adds the chartMdw to canvas
 var chartMdw = d3.select("body").append("svg")
     .attr("width", width + margin.left + margin.right)
     .attr("height", height + margin.top + margin.bottom)
@@ -84,41 +84,46 @@ var chartMdw = d3.select("body").append("svg")
     .attr("transform", 
 	  "translate(" + margin.left + "," + margin.top + ")");
 
-	// Get the data
-d3.csv("mdw.csv", function(error, data) {
+	// get the data //
+d3.csv("mdw.csv", function(d, i, columns) {
+  for (var i = 1, n = columns.length; i < n; ++i) d[columns[i]] = +d[columns[i]];
+  return d;
+}, function(error, data) {
   if (error) throw error;
+  var keys = data.columns.slice(1);
+
+	// Scale the range of the data
+  xbg0.domain(data.map(function(d) { return d.jaar; }));
+  xbg1.domain(keys).rangeRound([0, xbg0.bandwidth()]);
+  ybg.domain([0, d3.max(data, function(d) { return d3.max(keys, function(key) { return d[key]; }); })]).nice();
   
-  	// format the data
-  data.forEach(function(d) {
-    d.aantal = +d.aantal;
-  });
-	
-  	// Scale the range of the data in the domains
-  xb.domain(data.map(function(d) { return d.jaar; }));
-  yb.domain([0, d3.max(data, function(d) { return d.aantal; })]);	
   
-	// append the rectangles for the bar chart
-  chartMdw.selectAll(".bar")
-      .data(data)
+  chartMdw.append("g")
+    .selectAll("g")
+    .data(data)
+    .enter().append("g")
+      .attr("transform", function(d) { return "translate(" + xbg0(d.jaar) + ",0)"; })
+    .selectAll("rect")
+    .data(function(d) { return keys.map(function(key) { return {key: key, value: d[key]}; }); })
     .enter().append("rect")
-      .attr("class", "bar")
-      .attr("x", function(d) { return xb(d.jaar); })
-      .attr("width", xb.bandwidth())
-      .attr("y", function(d) { return yb(d.aantal); })
-      .attr("height", function(d) { return height - yb(d.aantal); });
+      .attr("x", function(d) { return xbg1(d.key); })
+      .attr("y", function(d) { return ybg(d.value); })
+      .attr("width", xbg1.bandwidth())
+      .attr("height", function(d) { return height - ybg(d.value); })
+      .attr("fill", function(d) { return zbg(d.key); });
   
-  	// add the xB Axis
+  	// Add the X Axis
   chartMdw.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
-      .call(d3.axisBottom(xb));
+      .call(d3.axisBottom(xbg0));
   
-  	// add the yB Axis
+	// Add the Y Axis
   chartMdw.append("g")
-      .attr("class", "axis")  
-      .call(d3.axisLeft(yb));
+      .attr("class", "axis")
+      .call(d3.axisLeft(ybg));
   
-	// Add a small label for the graph name.
+     	// Add a small label for the graph name.
   chartMdw.append("text")
       .attr("class", "title")
       .attr("x", 5)
@@ -126,8 +131,28 @@ d3.csv("mdw.csv", function(error, data) {
       .attr("font-weight", "bold")
       .style("text-anchor", "start")
       .style("font-size", 9)
-      .text("Gemiddeld aantal medewerkers");  
-   
+      .text("OMZET PER FTE/MDW (x € 1.000)");   
+  
+  var legend = chartMdw.append("g")
+      .attr("font-family", "sans-serif")
+      .attr("font-size", 9)
+      .attr("text-anchor", "end")
+    .selectAll("g")
+    .data(keys.slice().reverse())
+    .enter().append("g")
+      .attr("transform", function(d, i) { return "translate(0," + i * 20 + ")"; });
+  
+  legend.append("rect")
+      .attr("x", width - 19)
+      .attr("width", 19)
+      .attr("height", 19)
+      .attr("fill", zbg);
+  
+  legend.append("text")
+      .attr("x", width - 24)
+      .attr("y", 9.5)
+      .attr("dy", "0.32em")
+      .text(function(d) { return d; });
 });
 
 	//------------------------------------------------------------------>>>>> CHART2
