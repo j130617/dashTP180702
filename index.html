@@ -140,7 +140,8 @@ d3.csv("mdw.csv", function(d, i, columns) {
       .attr('class','legendHolder')
       
   var legend = legendHolder.selectAll(".legend")
-                    .data(keys.slice().reverse())
+                    //.data(keys.slice().reverse())
+  		    .data(keys.slice())
                     .enter().append("g")
                     .attr("class", "legend")
                     .attr('transform', function(d, i) { return "translate(" + -40*i + "," + 0 + ")"; })
