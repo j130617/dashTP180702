@@ -154,7 +154,7 @@ d3.csv("personeelskosten.csv", function(error, data) {
   yb.domain([0, d3.max(data, function(d) { return d.eur; })]);	
   
 	// append the rectangles for the bar chart
-  chartOmzet.selectAll(".bar")
+  chartPersoneelskosten.selectAll(".bar")
       .data(data)
     .enter().append("rect")
       .attr("class", "bar")
@@ -164,18 +164,18 @@ d3.csv("personeelskosten.csv", function(error, data) {
       .attr("height", function(d) { return height - yb(d.eur); });
   
   	// add the xB Axis
-  chartOmzet.append("g")
+  chartPersoneelskosten.append("g")
       .attr("class", "axis")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(xb));
   
   	// add the yB Axis
-  chartOmzet.append("g")
+  chartPersoneelskosten.append("g")
       .attr("class", "axis")  
       .call(d3.axisLeft(yb));
   
 	// Add a small label for the graph name.
-  chartOmzet.append("text")
+  chartPersoneelskosten.append("text")
       .attr("class", "title")
       .attr("x", 10)
       .attr("y", 5)
