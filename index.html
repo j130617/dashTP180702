@@ -510,5 +510,58 @@ d3.csv("ebitda.csv", function(error, data) {
    
 });
 	
+	//------------------------------------------------------------------>>>>> CHART8	
+	// Adds the chartWinst to canvas          
+var chartWinst = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", 
+	  "translate(" + margin.left + "," + margin.top + ")");
+
+	// Get the data
+d3.csv("winst.csv", function(error, data) {
+  if (error) throw error;
+  	
+	// format the data
+  data.forEach(function(d) {
+    d.eur = +d.eur;
+  });
+	
+  	// Scale the range of the data in the domains
+  x.domain(data.map(function(d) { return d.jaar; }));
+  y.domain([0, d3.max(data, function(d) { return d.eur; })]);	
+  
+	// append the rectangles for the bar chart
+  chartWinst.selectAll(".bar")
+      .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.jaar); })
+      .attr("width", x.bandwidth())
+      .attr("y", function(d) { return y(d.eur); })
+      .attr("height", function(d) { return height - y(d.eur); });
+  
+  	// add the x Axis
+  chartWinst.append("g")
+      .attr("class", "axis")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x));
+  
+  	// add the y Axis
+  chartWinst.append("g")
+      .attr("class", "axis")
+      .call(d3.axisLeft(y));
+  
+  chartWinst.append("text")
+      .attr("class", "title")
+      .attr("x", 10)
+      .attr("y", 5)
+      .attr("font-weight", "bold")
+      .style("text-anchor", "start")
+      .style("font-size", 10)
+      .text("WINST (mln €)");  
+});
+	
 </script>
 </body>
