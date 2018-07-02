@@ -136,7 +136,7 @@ d3.csv("mdw.csv", function(d, i, columns) {
   
   var legendHolder = chartMdw.append('g')
       // translate the holder to the right side of the graph
-      .attr('transform', "translate(" + (-width) + "," + (-margin.top) + ")")
+      .attr('transform', "translate(" + (-width) + "," + (-margin.bottom) + ")")
       .attr('class','legendHolder')
       
   var legend = legendHolder.selectAll(".legend")
